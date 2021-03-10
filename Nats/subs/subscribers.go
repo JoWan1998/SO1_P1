@@ -28,7 +28,7 @@ func main() {
 		fmt.Println("Waiting before connecting to NATS at:", uri)
 		time.Sleep(1 * time.Second)
 	}
-	
+
 	if err != nil {
 		log.Fatal("Error establishing connection to NATS: %s", uri, err)
 	}
