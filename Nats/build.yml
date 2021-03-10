@@ -1,36 +1,29 @@
-version: "2"
+version: '2'
 
 services:
-  nats:
-    image: 'nats'
-    entrypoint: ["bash,"/gnatsd -DV"]
-    expose:
-      - "4222"
-    ports:
-      - "8222:8222"
-    hostname: nats-server
-
-  api:
-    build:
-      context: "./api"
-    #entrypoint: /go/api-server
-    links:
-      - nats
-    environment:
-      - "NATS_URI=nats://nats:4222"
-    depends_on:
-      - nats
-    ports:
-      - "8080:8080"
-  worker:
-    build:
-      context: "./worker"
-    #entrypoint: /go/worker
-    links:
-      - nats
-    environment:
-      - "NATS_URI=nats://nats:4222"
-    depends_on:
-      - nats
-    ports:
-      - "8181:8181"
+    nats:
+        image: nats
+        expose:
+            - "4222"
+        ports:
+            - "8222:8222"
+        hostname: nats-server
+    publisher:
+        build: ./pubs
+        ports:
+            - "8080:8080"
+        environment:
+            - "NATS_URI=nats://nats:4222"
+        depends_on:
+            - nats
+    subscriber:
+        build: ./subs
+        restart: on-failure
+        environment:
+            - "NATS_URI=nats://nats:4222"   
+        ports:
+            - "8181:8181"                 
+        links:
+            - nats
+        depends_on:
+            - nats
