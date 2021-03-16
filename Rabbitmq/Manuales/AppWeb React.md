@@ -18,12 +18,12 @@
 
 * Tenemos los siguientes componentes , determinados para funciones en especifico.
 
-![This is a alt text.](/Imagenes/comp1.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/comp1.png "This is a sample image.")
 
 
 * tenemos la siguiente estructura.
 
-![This is a alt text.](/Imagenes/comp2.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/comp2.png "This is a sample image.")
 
 
 * estando en la carpeta raiz podemos inicar el proceso con 
@@ -70,14 +70,14 @@ services:                        //contenedor que  tendremos para el servicio
 
 1. Sabiendo que la mayoría de personas toma el celular por la mano derecha se colocó un menú  que se extiende si el tamaño de la pantalla tiene ciertas dimensiones , y si es grande se extiende.
 
-![This is a alt text.](/Imagenes/u1.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/u1.png "This is a sample image.")
 
 2. Tenemos cuando se extiende.
 
-![This is a alt text.](/Imagenes/u2.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/u2.png "This is a sample image.")
 
 
 3. cuando se contrae a sierto tamaño.
 
 
-![This is a alt text.](/Imagenes/u3.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/u3.png "This is a sample image.")
