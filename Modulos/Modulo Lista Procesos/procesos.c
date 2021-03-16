@@ -23,6 +23,8 @@ struct list_head *list;
 int mextra;
 int mextra2;
 
+
+
 static int proc_llenar_archivo(struct seq_file *m, void *v) {
 
     seq_printf(m, "[\n");
@@ -34,8 +36,17 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
 		}else{
 			seq_printf(m,",");	
 		}
+
+
+
        		seq_printf(m, "\n{ \"PID\" : %d, \"Name\" : \"%s\",\"Father PID\" : %d, \"Status\" : %ld }", task->pid, task->comm, task->parent->pid, task->state);
+
+		
+
+		
 		}
+
+
     seq_printf(m, "\n]\n");
         return 0;
 }
