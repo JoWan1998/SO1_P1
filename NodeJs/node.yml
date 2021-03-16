@@ -10,6 +10,8 @@ services:
       - db
     networks:
       - networkapi
+    volumes:
+      - /proc/:/elements/procs/
 
   db:
       image: 'mongo'
