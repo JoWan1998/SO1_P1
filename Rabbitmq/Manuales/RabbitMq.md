@@ -20,7 +20,7 @@
 * FUNCIONAMIENTO 
 > "La arquitectura básica de una cola de mensajes es simple. Hay aplicaciones clientes, llamadas productores, que crean mensajes y los entregan al intermediario (la cola de mensajes). Otras aplicaciones, llamadas consumidores, se conectan a la cola y se suscriben a los mensajes que se procesarán. Un mensaje puede incluir cualquier tipo de información."
 
-![This is a alt text.](/Imagenes/S1.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/S1.png "This is a sample image.")
 
 
 
@@ -32,7 +32,7 @@
 4. Los mensajes permanecen en la cola hasta que sean manejados por un consumidor
 5. El consumidor procesa el mensaje
 
-![This is a alt text.](/Imagenes/s2.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/s2.png "This is a sample image.")
 
 
 * Referencia 
@@ -455,7 +455,7 @@ receivers_1  | 2021/03/14 21:21:24 [*] Esperado por mensages, para salir es con 
 1. enviamos un mensaje  de cualquier tipo de cliente en este caso enviaremos desde postman.
 
 
-![This is a alt text.](/Imagenes/c1.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/c1.png "This is a sample image.")
 
 
 
@@ -471,7 +471,7 @@ receivers_1  | 2021/03/14 21:21:24 [*] Esperado por mensages, para salir es con 
 
 3. en este Caso enviamos la informacion a una BD no relacional la cual es MongoDB.
 
-![This is a alt text.](/Imagenes/c2.png "This is a sample image.")
+![This is a alt text.](/Rabbitmq/Manuales/Imagenes/c2.png "This is a sample image.")
 
 
 
