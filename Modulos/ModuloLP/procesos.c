@@ -1,7 +1,6 @@
 #include <linux/module.h> 
 #include <linux/kernel.h> 
 #include <linux/init.h>
-#include <linux/list.h>
 #include <linux/types.h>
 #include <linux/slab.h>
 #include <linux/sched.h>
@@ -11,10 +10,12 @@
 #include <linux/proc_fs.h>
 #include <asm/uaccess.h> 
 #include <linux/hugetlb.h>
+
 #include <linux/sched/signal.h>
-#include <linux/sched.h>
 
 #define FileProc "procesos"
+
+
 
 
 struct task_struct *task;
@@ -37,13 +38,8 @@ static int proc_llenar_archivo(struct seq_file *m, void *v) {
 			seq_printf(m,",");	
 		}
 
-
-
        		seq_printf(m, "\n{ \"PID\" : %d, \"Name\" : \"%s\",\"Father PID\" : %d, \"Status\" : %ld }", task->pid, task->comm, task->parent->pid, task->state);
 
-		
-
-		
 		}
 
 
@@ -88,4 +84,4 @@ module_init(inicializando);
 module_exit(finalizando);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Proyecto 1 Sopes");
-MODULE_DESCRIPTION("Lista de Procesos");
+MODULE_DESCRIPTION("Procesos");
