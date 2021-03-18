@@ -33,7 +33,6 @@ func (s server) createTask(w http.ResponseWriter, r *http.Request) {
 	var body map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&body)
 	error_(err, "parseando Json")
-	body["way"] = "Nats"
 	data, err := json.Marshal(body)
 	error_(err,"ERROR OBTENIENDO CUERPO")
 	fmt.Println(string(data))
