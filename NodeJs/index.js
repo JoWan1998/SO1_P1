@@ -19,8 +19,21 @@ app.get('/', (req, res) => {
     res.send('API SOPES 1 :D');
 });
 
+app.post('/locus', (req, res) => {
+    console.log("ENVIO-----------------------");
+    console.log(req.body);
+    console.log("RESPUESTA-------------------");
+    res.send(req.body);
+});
+
 app.get('/ram', (req, res) => {
     const html = fs.readFileSync('/elements/procs/ram-module','utf-8');
+    let texto = html.toString();
+    res.send(texto);
+});
+
+app.get('/procesos', (req, res) => {
+    const html = fs.readFileSync('/elements/procs/procesos','utf-8');
     let texto = html.toString();
     res.send(texto);
 });
@@ -63,7 +76,8 @@ app.post('/nuevoRegistro', (req, res) => {
             "location": data.location,
             "age": data.age,
             "infectedtype": data.infectedtype,
-            "state": data.state
+            "state": data.state,
+            "way": data.way
         }
 
         baseD.collection('usuario').insertOne(user, function(err, res){
@@ -85,13 +99,13 @@ app.get('/obtenerUsuarios', (req, res) => {
         var dbo = db.db(nameDB);
         dbo.collection("usuario").find({}).toArray(function(err, result) {
           if (err) throw err;
-          resultado = result;
+          resultado = JSON.stringify(result);
           console.log(result);
           db.close();
         });
     }); 
-
-    res.json(resultado);
+    console.log("------\n" + resultado);
+    res.send(resultado);
 });
 
 app.listen(port, () => {console.log(`Server corriendo en puerto ${port}!`) });
