@@ -57,8 +57,8 @@ func conection() {
 	go func() {
 		for d := range msgs {
 			log.Printf("Mensage Recibido: %s", d.Body)
-			post := []byte(string(d.Body))                                                          //convertimos a una cadena de bytes
-			req, err := http.Post("http://mongos:5000/", "application/json", bytes.NewBuffer(post)) //hacemos la peticion a la bd
+			post := []byte(string(d.Body))                                                                              //convertimos a una cadena de bytes
+			req, err := http.Post("http://35.222.55.115:8080/nuevoRegistro", "application/json", bytes.NewBuffer(post)) //hacemos la peticion a la bd
 			req.Header.Set("Content-Type", "application/json")
 			error_(err, "Post nuevo documento")
 			defer req.Body.Close() // cerramos el body

@@ -574,7 +574,7 @@ Y **Listo**, ya poseemos nuestro servicio **pub/sub Nats**, ejecutandose en nues
 * Para ejecutar una peticion podemos ejecutar la siguiente instruccion, desde otra consola de comandos:
 
 ```
-    curl -i -X POST -H "Content-Type: application/json" -d '{"nombre":"José Wannan", "edad": 22, "Universidad": "USAC"}' http://127.0.0.1:8080/
+    curl -i -X POST -H "Content-Type: application/json" -d '{"name": "usuario","location": "guatemala","age": "33","infectedtype": "infeccion","state": "guatemala"}' http://35.222.55.115:8080/nuevoRegistro
 ```
 
 Deben de recibir una salida como esta:
