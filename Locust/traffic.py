@@ -38,21 +38,21 @@ class Reader():
 
 
         # Si aun hay valores en el array
-        if (length > 0 and length > len(keys)):
+        if length > 0 and length > len(keys):
             # Obtenemos un valor random desde 0 al largo del array - 1
             # Si el largo de nuestro arreglo es uno, entonces debemos de agarrar el ultimo indice posible, o sea 0.
             # De lo contrario, utilizaremos un valor al azar
             # Esta comparacion se hace debudo al error empty range for randrange() (0, 0, 0),
             # Al llegar a 1 en el largo, el rango de random se convierte en 0, 0; y hace fallar al programa
-            while(True):
+            while True:
                 random_index = randrange(0, length - 1) if length > 1 else 0
-                if(random_index not in keys):
-                    keys.index(random_index)
-                    break
+                if random_index not in keys:
+                    keys.append(random_index)
+                    return self.array.pop(random_index)
 
             # Devolvemos el valor que se encuentra en nuestro indice random
             # Quitamos el valor del array
-            return self.array.pop(random_index)
+            return None
 
         # Si ya no hay mas datos que leer del archivo
         else:
@@ -116,7 +116,7 @@ class MessageTraffic(HttpUser):
                 printDebug(data_to_send)
 
                 # Enviar los datos que acabamos de obtener
-                self.client.post("/nuevoRegistro", json=random_data)
+                self.client.post("/", json=random_data)
                 self.passData = True
 
             # En este segmento paramos la ejecución del proceso de creación de tráfico
