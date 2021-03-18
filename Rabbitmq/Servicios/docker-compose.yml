@@ -17,5 +17,3 @@ services:
       restart: on-failure
       depends_on: 
         - rabbitmq
-  mongos:
-      build: ./Mongo
