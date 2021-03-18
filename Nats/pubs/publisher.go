@@ -6,6 +6,7 @@ import (
   "net/http"
   "os"
   "time"
+  "strings"
   "encoding/json"
 
   "github.com/nats-io/go-nats"
@@ -32,9 +33,9 @@ func (s server) createTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var body map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&body)
-	error_(err, "parseando Json")
+	log.Println("Error Parseando JSON: ", err)
 	data, err := json.Marshal(body)
-	error_(err,"ERROR OBTENIENDO CUERPO")
+	log.Println("Error Reading Body: ", err)
 	fmt.Println(string(data))
 	response, err := s.nc.Request("tasks", []byte(data), 5*time.Second)
 	if err != nil {
@@ -43,6 +44,7 @@ func (s server) createTask(w http.ResponseWriter, r *http.Request) {
 	duration := time.Since(requestAt)
 
 	fmt.Fprintf(w, "Task scheduled in %+v\nResponse: %v\n", duration, string(response.Data))
+
   }
 
 
