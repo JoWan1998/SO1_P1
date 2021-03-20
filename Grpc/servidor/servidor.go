@@ -5,7 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net"
-	//"os"
+	"io/ioutil"
+	"strconv"
+	"bytes"
+	"os"
+	"net/http"
+	"encoding/json"
 
 	"google.golang.org/grpc"
 	"grpcserver/user.pb/user.pb"
@@ -16,19 +21,39 @@ type servidor struct{}
 func (*servidor) RegUser(ctx context.Context, req *user_pb.UserRequest) (*user_pb.UserResponse, error) {
 	fmt.Println("Todo bien!")
 
-	
+	cuerpoPeticion, _ := json.Marshal(map[string]string{
+		"name": req.User.Name,
+		"location": req.User.Location,
+		"age": strconv.FormatInt(req.User.Age, 10),
+		"infectedtype": req.User.Infectedtype,
+		"state": req.User.State,
+		"way": "GRPC",
+	})
 
+	pet := bytes.NewBuffer(cuerpoPeticion)
+
+	resp, err := http.Post("http://35.222.55.115:8080/nuevoRegistro", "application/json", pet)
+	if err != nil {
+		log.Fatalln("Error al registrar nuevo: ", err)
+	}
+
+	defer resp.Body.Close()
+
+	cuerpo, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		log.Fatalln(err)
+	}
 
 	result := &user_pb.UserResponse{
-		Resultado: "Respuestita de GRPC",
+		Resultado: string(cuerpo),
 	}
 
 	return result, nil
 }
 
 func main() {
-	//host := os.Getenv("HOST")
-	host := "0.0.0.0:8081"
+	host := os.Getenv("HOST")
+	//host := "0.0.0.0:8081"
 	fmt.Println("Servidor iniciado en ", host)
 
 	lis, err := net.Listen("tcp", host)

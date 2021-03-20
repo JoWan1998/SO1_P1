@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"encoding/json"
-	//"os"
+	"os"
 
 	"log"
 	"net/http"
@@ -22,8 +22,8 @@ type userStruct struct{
 }
 
 func registrarUsuario(nameparam string, locationparam string, ageparam int64, infectedtypeparam string, stateparam string) {
-	//server_host := os.Getenv("SERVER_HOST")
-	server_host := "0.0.0.0:8081"
+	server_host := os.Getenv("SERVER_HOST")
+	//server_host := "0.0.0.0:8081"
 	fmt.Println("Enviando peticion ...")
 
 	cc, err := grpc.Dial(server_host, grpc.WithInsecure())
@@ -60,8 +60,8 @@ func registrarUsuario(nameparam string, locationparam string, ageparam int64, in
 }
 
 func http_server(w http.ResponseWriter, r *http.Request){
-	//instance_name := os.Getenv("NAME")
-	instance_name := "grpcInstancia"
+	instance_name := os.Getenv("NAME")
+	//instance_name := "grpcInstancia"
 	fmt.Println("Manejando peticion HTTP cliente: ", instance_name)
 
 	if r.URL.Path != "/"{
@@ -98,10 +98,10 @@ func http_server(w http.ResponseWriter, r *http.Request){
 }
 
 func main() {
-	//instance_name := os.Getenv("NAME")
-	instance_name := "grpcInstancia"
-	//client_host := os.Getenv("CLIENT_HOST")
-	client_host := ":8080"
+	instance_name := os.Getenv("NAME")
+	//instance_name := "grpcInstancia"
+	client_host := os.Getenv("CLIENT_HOST")
+	//client_host := ":8080"
 
 	fmt.Println("Cliente ", instance_name ," listo!")
 	fmt.Println("Iniciando http server en ", client_host)
