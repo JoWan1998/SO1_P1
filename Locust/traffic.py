@@ -129,7 +129,8 @@ class MessageTraffic(HttpUser):
 
     # Este es una de las tareas que se ejecutara cada vez que pase el tiempo wait_time
     # Realiza un GET a la dirección del host que especificamos en la página de locust
-    @task
-    def GetMessages(self):
+    
+    ##@task
+    ##def GetMessages(self):
         # Realizar una peticion para recibir los datos que hemos guardado
-        self.client.get("/")
+    ##    self.client.get("/")
