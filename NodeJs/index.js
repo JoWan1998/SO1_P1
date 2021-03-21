@@ -97,6 +97,8 @@ app.get('/obtenerUsuarios', (req, res) => {
     mongoClient.connect(urlMongo, function(err, db) {
         if (err) throw err;
         var dbo = db.db(nameDB);
+
+
         dbo.collection("usuario").find({}).toArray(function(err, result) {
           if (err) throw err;
           resultado = JSON.stringify(result);
@@ -107,7 +109,6 @@ app.get('/obtenerUsuarios', (req, res) => {
     console.log("------\n" + resultado);
     res.send(resultado);
 });
-
 
 //---------------------- METODOS
 //Top n departamentos infectados. (Gráfica de Funnel)
@@ -138,7 +139,6 @@ function top_(visitados,num){
     //retornamos lista ordenada y limitada a lo que entre
     return filtro.sort(((a, b) => b.total - a.total)).slice(0,num);
 }
-
 //porcentaje de casos infectados por state.
 function infect_(visitados){
     const lista = []
@@ -167,7 +167,6 @@ function infect_(visitados){
     }); 
     return filtro;
 }
-
 //Tipo infectado 
 function type_(visitados){
     const lista = []
@@ -196,43 +195,105 @@ function type_(visitados){
     }); 
     return filtro;
 }
-
-
 /// conexion
 //Nos conectamos a la base de datos 
 var db;
-MongoCliente.connect(DB_URI,{useUnifiedTopology:true},(err,client)=>{
+mongoClient.connect(urlMongo,{useUnifiedTopology:true},(err,client)=>{
     if(err)throw(err)
-    db = client.db("RabbitUsers");
+    db = client.db(nameDB);
 })
+
+
+//------------------------  Rutas 2.0
+
+app.get('/Top5', (req, res) => {
+    var resultado;
+    mongoClient.connect(urlMongo, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db(nameDB);
+
+
+        dbo.collection("usuario").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          resultado = JSON.stringify(result);
+          console.log(result);
+          db.close();
+        });
+    }); 
+    console.log("------\n" + resultado);
+    res.json(top_(resultado,5))
+});
+
+app.get('/state', (req, res) => {
+    var resultado;
+    mongoClient.connect(urlMongo, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db(nameDB);
+
+
+        dbo.collection("usuario").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          resultado = JSON.stringify(result);
+          console.log(result);
+          db.close();
+        });
+    }); 
+    console.log("------\n" + resultado);
+    res.json(infect_(result))
+
+});
+
+app.get('/type', (req, res) => {
+    var resultado;
+    mongoClient.connect(urlMongo, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db(nameDB);
+
+
+        dbo.collection("usuario").find({}).toArray(function(err, result) {
+          if (err) throw err;
+          resultado = JSON.stringify(result);
+          console.log(result);
+          db.close();
+        });
+    }); 
+    console.log("------\n" + resultado);
+    res.json(type_(result))
+});
+
+
+
+
+
+
 
 //------------------   RUTAS
 //Top 5 Departamentos mas infectados 
-app.get('/Top5',async (req,res)=>{
-    await db.collection("usuario").find({}).toArray(function(err,result){
-        if(err) throw err;
-        console.log(result)
-        res.json(top_(result,5))
-    })
-})
+// app.get('/Top5',async (req,res)=>{
+//     await db.collection("usuario").find({}).toArray(function(err,result){
+//         if(err) throw err;
+//         console.log(result)
+//         res.json(top_(result,5))
+//     })
+// })
 
-// casos infectados por state.
-app.get('/state',async (req,res)=>{
-    await db.collection("usuario").find({}).toArray(function(err,result){
-        if(err) throw err;
-        console.log(result)
-        res.json(infect_(result))
-    })
-})
+// // casos infectados por state.
+// app.get('/state',async (req,res)=>{
+//     await db.collection("usuario").find({}).toArray(function(err,result){
+//         if(err) throw err;
+//         console.log(result)
+//         res.json(infect_(result))
+//     })
+// })
 
-// casos infectados por infectedtype.
-app.get('/type',async (req,res)=>{
-    await db.collection("usuario").find({}).toArray(function(err,result){
-        if(err) throw err;
-        console.log(result)
-        res.json(type_(result))
-    })
-})
+// // casos infectados por infectedtype.
+// app.get('/type',async (req,res)=>{
+//     await db.collection("usuario").find({}).toArray(function(err,result){
+//         if(err) throw err;
+//         console.log(result)
+//         res.json(type_(result))
+//     })
+// })
 
 
 
