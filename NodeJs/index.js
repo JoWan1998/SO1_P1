@@ -108,4 +108,135 @@ app.get('/obtenerUsuarios', (req, res) => {
     res.send(resultado);
 });
 
+
+//---------------------- METODOS
+//Top n departamentos infectados. (Gráfica de Funnel)
+function top_(visitados,num){
+    const lista = []
+    const filtro=[]
+    //listamos solo datos que necesitamos
+    visitados.forEach(element => {
+        lista.push(element.location.toLowerCase())
+    });
+    //quitamos duplicados
+    const lista2 = lista.filter((item,index)=>{
+        return lista.indexOf(item) == index;
+      })
+    //comparamos con el listado principal e insertamos
+    lista2.forEach(data => {
+        contador =0;
+        visitados.forEach(data2 => {
+            if(data==data2.location.toLowerCase()){
+                contador+=1
+            }
+        });
+        filtro.push({
+            location:data,
+            total: contador
+        })
+    }); 
+    //retornamos lista ordenada y limitada a lo que entre
+    return filtro.sort(((a, b) => b.total - a.total)).slice(0,num);
+}
+
+//porcentaje de casos infectados por state.
+function infect_(visitados){
+    const lista = []
+    const filtro=[]
+    //listamos solo datos que necesitamos
+    visitados.forEach(element => {
+        lista.push(element.state.toLowerCase())
+    });
+    //quitamos duplicados
+    const lista2 = lista.filter((item,index)=>{
+        return lista.indexOf(item) == index;
+      })
+    //sacamos el porcentaje
+    lista2.forEach(data => {
+        contador =0;
+        visitados.forEach(data2 => {
+            if(data==data2.state.toLowerCase()){
+                contador+=1
+            }
+        });
+        var porcentaje = ((contador*100)/lista.length);
+        filtro.push({
+            state: data,
+            porcent: porcentaje
+        })
+    }); 
+    return filtro;
+}
+
+//Tipo infectado 
+function type_(visitados){
+    const lista = []
+    const filtro=[]
+    //listamos solo datos que necesitamos
+    visitados.forEach(element => {
+        lista.push(element.infectedtype.toLowerCase())
+    });
+    //quitamos duplicados
+    const lista2 = lista.filter((item,index)=>{
+        return lista.indexOf(item) == index;
+      })
+    //sacamos el porcentaje
+    lista2.forEach(data => {
+        contador =0;
+        visitados.forEach(data2 => {
+            if(data==data2.infectedtype.toLowerCase()){
+                contador+=1
+            }
+        });
+        var porcentaje = ((contador*100)/lista.length);
+        filtro.push({
+            infectedtype: data,
+            porcent: porcentaje
+        })
+    }); 
+    return filtro;
+}
+
+
+/// conexion
+//Nos conectamos a la base de datos 
+var db;
+MongoCliente.connect(DB_URI,{useUnifiedTopology:true},(err,client)=>{
+    if(err)throw(err)
+    db = client.db("RabbitUsers");
+})
+
+//------------------   RUTAS
+//Top 5 Departamentos mas infectados 
+app.get('/Top5',async (req,res)=>{
+    await db.collection("usuario").find({}).toArray(function(err,result){
+        if(err) throw err;
+        console.log(result)
+        res.json(top_(result,5))
+    })
+})
+
+// casos infectados por state.
+app.get('/state',async (req,res)=>{
+    await db.collection("usuario").find({}).toArray(function(err,result){
+        if(err) throw err;
+        console.log(result)
+        res.json(infect_(result))
+    })
+})
+
+// casos infectados por infectedtype.
+app.get('/type',async (req,res)=>{
+    await db.collection("usuario").find({}).toArray(function(err,result){
+        if(err) throw err;
+        console.log(result)
+        res.json(type_(result))
+    })
+})
+
+
+
+
+
+
 app.listen(port, () => {console.log(`Server corriendo en puerto ${port}!`) });
