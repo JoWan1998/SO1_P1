@@ -6,6 +6,41 @@ const fs = require('fs');
 
 const app = express();
 const cors = require('cors');
+const regiones =[
+    {
+        region: "Región VI o Suroccidente",
+        departamentos: ["quetzaltenango","retalhuleu","San Marcos","Suchitepéquez","Sololá","Totonicapán"]
+    },
+    {
+        region: "Región I o Metropolitana",
+        departamentos: ["Guatemala"]
+    },
+    {
+        region: "Región VII o Noroccidente",
+        departamentos: ["Huehuetenango","Quiché"]
+    },
+    {
+        region: "Región V o Central",
+        departamentos: ["Chimaltenango","Sacatepéquez","Escuintla"]
+    },
+    {
+        region: "Región II o Verapaz",
+        departamentos: ["Alta Verapaz","Baja Verapaz"]
+    },
+    {
+        region: "Región III o Nororiente",
+        departamentos: ["Chiquimula","El Progreso","Izabal","Zacapa"]
+    },
+    {
+        region: "Región IV o Suroriente",
+        departamentos: ["Jutiapa","Jalapa","Santa Rosa"]
+    },
+    {
+        region: "Región VIII o Petén",
+        departamentos: ["Petén"]
+    }
+]
+
 
 app.use(cors());
 app.use(express.json());
@@ -241,91 +276,42 @@ function type_(visitados){
 //Region
 function regiM_(visitados,num){
     const lista = []
-    const filtro=[]
-    const rest  =[]
-
-    //arreglo dado
-    const regiones =[
-        {
-            region: "Región VI o Suroccidente",
-            departamentos: ["quetzaltenango","retalhuleu","San Marcos","Suchitepéquez","Sololá","Totonicapán"]
-        },
-        {
-           region: "Región I o Metropolitana",
-           departamentos: ["Guatemala"]
-        },
-        {
-           region: "Región VII o Noroccidente",
-           departamentos: ["Huehuetenango","Quiché"]
-        },
-       {
-           region: "Región V o Central",
-           departamentos: ["Chimaltenango","Sacatepéquez","Escuintla"]
-       },
-       {
-           region: "Región II o Verapaz",
-           departamentos: ["Alta Verapaz","Baja Verapaz"]
-       },
-       {
-           region: "Región III o Nororiente",
-           departamentos: ["Chiquimula","El Progreso","Izabal","Zacapa"]
-       },   
-       {
-           region: "Región IV o Suroriente",
-           departamentos: ["Jutiapa","Jalapa","Santa Rosa"]
-       },
-       {
-           region: "Región VIII o Petén",
-           departamentos: ["Petén"]  
-       }
-    ]
     //listamos solo datos que necesitamos
     visitados.forEach(element => {
-        lista.push(element.location.toLowerCase())
-    });
-    //quitamos duplicados
-    const lista2 = lista.filter((item,index)=>{
-        return lista.indexOf(item) == index;
-      })
-    //comparamos con el listado principal e insertamos
-    lista2.forEach(data => {
-        contador =0;
-        visitados.forEach(data2 => {
-            if(data==data2.location.toLowerCase()){
-                contador+=1
-            }
-        });
-        filtro.push({
-            location:data,
-            total: contador
-        })
-    }); 
-
-    //Recorremos paices con su total 
-    filtro.forEach(data => {
-        departaments=""
-        contador =0
-       
-        regiones.forEach(data2 => {
-            boole    = false 
-            data2.departamentos.forEach(ele =>{
-                if(data.location.toLowerCase() == ele.toLowerCase()){
-                    departaments += "("+ele+":"+data.total+")"
-                    contador     += data.total
-                    boole = true
+        if(element.location != null)
+        {
+            var _k = false;
+            var _region = '';
+            regiones.forEach(regiones=>
+            {
+                if(_region === '')
+                {
+                    regiones.departamentos.forEach(departamento=>
+                    {
+                        if(departamento.normalize('NFD').replace(/[\u0300-\u036f]/g,"").toUpperCase() === element.location.normalize('NFD').replace(/[\u0300-\u036f]/g,"").toUpperCase())
+                        {
+                            _region = regiones.region;
+                        }
+                    })
+                }
+            })
+            lista.forEach(element1=>
+            {
+                if(element1.region === _region)
+                {
+                    element1.total = element1.total + 1;
+                    _k = true;
                 }
             });
-            if(boole==true){
-                rest.push({
-                    region:data2.region,
-                    departamentos:departaments,
-                    total: contador
-                })
+
+            if(!_k)
+            {
+
+                lista.push({region: _region, total: 1});
             }
-        }); 
+        }
 
     });
-
     //retornamos lista ordenada y limitada a lo que entre
-    return rest.sort(((a, b) => b.total - a.total)).slice(0,num);
+    return lista.sort(((a, b) => b.total - a.total)).slice(0,num);
 }
