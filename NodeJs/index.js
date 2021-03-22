@@ -202,13 +202,13 @@ function age_(pacientes)
             var _k = false;
             lista.forEach(element=>
             {
-                if(element.age === paciente.age)
+                if(element.age.toString() === paciente.age.toString())
                 {
                     element.count = element.count + 1;
                     _k = true;
                 }
             });
-            if(!_k) lista.push({age: paciente.age, count: 1});
+            if(!_k) lista.push({age: paciente.age.toString(), count: 1});
         }
     })
 
