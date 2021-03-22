@@ -307,7 +307,7 @@ function regiM_(visitados,num){
             if(!_k)
             {
 
-                lista.push({region: _region, total: 1});
+                if(_region!='') lista.push({region: _region, total: 1});
             }
         }
 
