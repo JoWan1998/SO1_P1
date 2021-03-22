@@ -159,17 +159,17 @@ function top_(visitados,num){
             lista.forEach(element1=>{
                 if(element1.location === element.location.toLowerCase())
                 {
-                    element1.count = element1.count + 1;
+                    element1.valor = element1.valor + 1;
                     __in = true;
                 }
             })
-            if(!__in) lista.push( { location: element.location.toLowerCase(), count: 1});
+            if(!__in) lista.push( { location: element.location.toLowerCase(), valor: 1});
         }
 
     });
 
     //retornamos lista ordenada y limitada a lo que entre
-    return lista.sort(((a, b) => b.count - a.count)).slice(0,num);
+    return lista.sort(((a, b) => b.valor - a.valor)).slice(0,num);
 }
 //porcentaje de casos infectados por state.
 function infect_(visitados){
