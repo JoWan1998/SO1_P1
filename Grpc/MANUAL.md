@@ -46,3 +46,16 @@ Estas estructuras de mensajería y el servicio de rpc se definen en un mismo arc
 ```zsh
 protoc user.proto --go_out=plugins=grpc:.
 ```
+
+Al momento de compilar, se genera un archivo ```user.pb.go``` el cuál genera el compilador escrito en lenguaje Go que utiliza propiamente grpc para el servicio de mensajería.
+
+![](img/protob.png)
+
+_Árbol de archivos de Protocol Buffers_
+
+Este mismo procedimiento se realizó tanto para el [cliente](#cliente) como para el [servidor](#servidor), los cuáles se detallan a continuación.
+
+### Servidor
+Primero se crea el módulo del servidor llamado ```grpccliente``` en go con el comando ```go mod init grpccliente```, seguido de eso se procede a definir los [Protocol Buffers](#protocol-buffers). 
+
+Luego se crea el ```servidor.go``` de la siguiente manera:

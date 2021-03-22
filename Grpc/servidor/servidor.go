@@ -6,7 +6,6 @@ import (
 	"log"
 	"net"
 	"io/ioutil"
-	"strconv"
 	"bytes"
 	"os"
 	"net/http"
@@ -18,16 +17,25 @@ import (
 
 type servidor struct{}
 
+type usuario struct{
+	name string
+	location string
+	age int
+	infectedtype string
+	state string
+	way string
+}
+
 func (*servidor) RegUser(ctx context.Context, req *user_pb.UserRequest) (*user_pb.UserResponse, error) {
 	fmt.Println("Todo bien!")
 
-	cuerpoPeticion, _ := json.Marshal(map[string]string{
-		"name": req.User.Name,
-		"location": req.User.Location,
-		"age": strconv.FormatInt(req.User.Age, 10),
-		"infectedtype": req.User.Infectedtype,
-		"state": req.User.State,
-		"way": "GRPC",
+	cuerpoPeticion, _ := json.Marshal(usuario{
+		name: req.User.Name,
+		location: req.User.Location,
+		age: int(req.User.Age),
+		infectedtype: req.User.Infectedtype,
+		state: req.User.State,
+		way: "GRPC",
 	})
 
 	pet := bytes.NewBuffer(cuerpoPeticion)
