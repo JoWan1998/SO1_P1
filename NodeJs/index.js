@@ -205,14 +205,12 @@ function age_(pacientes)
 
     pacientes.forEach(paciente=>
     {
-        if(paciente.age != null)
+        if(paciente.age != null && Number(paciente.age))
         {
             lista.forEach(element=>
             {
-                if(element.inicial >= Number(paciente.age.toString()) && element.final <= Number(paciente.age.toString()))
-                {
-                    element.count = element.count + 1;
-                }
+                if(Number(paciente.age.toString()) >=  element.inicial &&
+                    Number(paciente.age.toString()) <= element.final) element.count = element.count + 1;
             });
         }
     })
