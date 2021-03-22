@@ -50,21 +50,28 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     */
     app.post('/nuevoRegistro', (req, res) => {
         const data = req.body;
-        const user = {
-            "name": data.name,
-            "location": data.location,
-            "age": data.age,
-            "infectedtype": data.infectedtype,
-            "state": data.state,
-            "way": data.way
-        }
+		if(data.name != null && data.location != null && data.age != null && data.infectedtype != null && data.state != null)
+		{
+			
+			const user = {
+				"name": data.name,
+				"location": data.location,
+				"age": data.age,
+				"infectedtype": data.infectedtype,
+				"state": data.state,
+				"way": data.way
+			}
 
-        coleccion.insertOne(user)
-        .then(result => {
-            //console.log(result);
-            res.send('Registro Insertado!');
-        })
-        .catch(error => console.error("Error al insertar un registro: ", error));
+			coleccion.insertOne(user)
+			.then(result => {
+				//console.log(result);
+				res.send('Registro Insertado!');
+			})
+			.catch(error => console.error("Error al insertar un registro: ", error));
+		}
+		else{
+			res.send('Nulls encontrados');
+		}
     });
 
     app.get('/deleteAll', (req, res) => {
@@ -127,9 +134,9 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 
     //tabla con los ultimos 5 casos registrados
     app.get('/top5/pacientes', async (req,res)=> {
-        await coleccion.find().sort({$natural:-1}).limit(5).toArray()
+        await coleccion.find( { name: { $ne: null } }).sort({$natural:-1}).limit(5).toArray()
         .then(result => {
-            console.log(result.length);
+            //console.log(result.length);
             res.json(result);
         })
         .catch(err => console.error("Error Top5 / pacientes:\n", err))
