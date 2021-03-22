@@ -194,25 +194,30 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 function age_(pacientes)
 {
     const lista = []
+    const ranges = [10,20,30,40,50,60,70,80,90,100]
+    var ant = 0;
+
+    ranges.forEach(ran=>
+    {
+        lista.push({ inicial: ant, final: ran, legend: ant + " - "+ran, count: 0});
+        ant = ran;
+    })
 
     pacientes.forEach(paciente=>
     {
         if(paciente.age != null)
         {
-            var _k = false;
             lista.forEach(element=>
             {
-                if(element.age.toString() === paciente.age.toString())
+                if(element.inicial >= Number(paciente.age.toString()) && element.final <= Number(paciente.age.toString()))
                 {
                     element.count = element.count + 1;
-                    _k = true;
                 }
             });
-            if(!_k) lista.push({age: paciente.age.toString(), count: 1});
         }
     })
 
-    return lista.sort(((a, b) => a.age - b.age));
+    return lista;
 }
 //Top n departamentos infectados. (Gráfica de Funnel)
 function top_(visitados,num){
