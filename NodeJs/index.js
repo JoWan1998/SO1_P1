@@ -151,30 +151,25 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 //Top n departamentos infectados. (Gráfica de Funnel)
 function top_(visitados,num){
     const lista = []
-    const filtro=[]
     //listamos solo datos que necesitamos
     visitados.forEach(element => {
-        lista.push(element.location.toLowerCase())
+        if(element.location != null)
+        {
+            var __in = false;
+            lista.forEach(element1=>{
+                if(element1.location === element.location.toLowerCase())
+                {
+                    element1.count = element1.count + 1;
+                    __in = true;
+                }
+            })
+            if(!__in) lista.push( { location: element.location.toLowerCase(), count: 1});
+        }
+
     });
-    //quitamos duplicados
-    const lista2 = lista.filter((item,index)=>{
-        return lista.indexOf(item) == index;
-      })
-    //comparamos con el listado principal e insertamos
-    lista2.forEach(data => {
-        contador =0;
-        visitados.forEach(data2 => {
-            if(data==data2.location.toLowerCase()){
-                contador+=1
-            }
-        });
-        filtro.push({
-            location:data,
-            total: contador
-        })
-    }); 
+
     //retornamos lista ordenada y limitada a lo que entre
-    return filtro.sort(((a, b) => b.total - a.total)).slice(0,num);
+    return lista.sort(((a, b) => b.count - a.count)).slice(0,num);
 }
 //porcentaje de casos infectados por state.
 function infect_(visitados){
