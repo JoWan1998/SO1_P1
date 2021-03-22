@@ -176,6 +176,13 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
         })
         .catch(err => console.error("Error Top5 / pacientes:\n", err))
     });
+	
+	app.get('/Ages',async (req,res)=>{
+    await db.collection("Users").find({}).toArray(function(err,result){
+        if(err) throw err;
+        res.json(age_(result))
+    })
+})
 
     app.listen(port, () => {console.log(`Server corriendo en puerto ${port}!`) });
     
@@ -183,6 +190,30 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 .catch(console.error)
 
 //---------------------- METODOS
+
+function age_(pacientes)
+{
+    const lista = []
+
+    pacientes.forEach(paciente=>
+    {
+        if(paciente.age != null)
+        {
+            var _k = false;
+            lista.forEach(element=>
+            {
+                if(element.age === paciente.age)
+                {
+                    element.count = element.count + 1;
+                    _k = true;
+                }
+            });
+            if(!_k) lista.push({age: paciente.age, count: 1});
+        }
+    })
+
+    return lista.sort(((a, b) => a.age - b.age));
+}
 //Top n departamentos infectados. (Gráfica de Funnel)
 function top_(visitados,num){
     const lista = []
