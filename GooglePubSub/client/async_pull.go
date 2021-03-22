@@ -29,7 +29,6 @@ func pullMsgs(projectID, subID string) error {
 	sub := client.Subscription(subID)
 	//cctx, cancel := context.WithCancel(ctx) //Se usaria en el caso que queramos cerrar el canal
 	err = sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-		fmt.Println("ingresa")
 
 		mu.Lock()
 		defer mu.Unlock()
@@ -42,9 +41,9 @@ func pullMsgs(projectID, subID string) error {
 
 		//Codigo para Hacer la peticion Post fuera del container
 		value := string(msg.Data)
-		mesage, _ := sjson.Set(value, "Server_2", "Modificacion")
+		mesage, _ := sjson.Set(value, "way", "Google_Subscriber")
 		b := []byte(mesage)
-		resp, err := http.Post("https://httpbin.org/post", "application/json",
+		resp, err := http.Post("http://35.222.55.115:8080/nuevoRegistro", "application/json",
 			bytes.NewBuffer(b))
 
 		if err != nil {
@@ -55,7 +54,6 @@ func pullMsgs(projectID, subID string) error {
 		fmt.Println(string(body))
 
 	})
-	fmt.Println("noingresa")
 
 	if err != nil {
 		fmt.Print(err)
@@ -65,5 +63,5 @@ func pullMsgs(projectID, subID string) error {
 }
 
 func main() {
-	pullMsgs("civic-polymer-305516", "proyect_topic-sub")
+	pullMsgs("civic-polymer-305516", "my-sub")
 }
