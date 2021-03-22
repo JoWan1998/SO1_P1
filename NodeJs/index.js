@@ -174,60 +174,70 @@ function top_(visitados,num){
 //porcentaje de casos infectados por state.
 function infect_(visitados){
     const lista = []
-    const filtro=[]
+    let cantidad = 0;
     //listamos solo datos que necesitamos
     visitados.forEach(element => {
-        lista.push(element.state.toLowerCase())
+        if(element.state!= null)
+        {
+            var __k = false;
+            lista.forEach(element1 =>
+            {
+                if(element1.state === element.state.toLowerCase())
+                {
+                    element1.count = element1.count + 1;
+                    __k = true;
+                }
+            });
+            if(!__k) lista.push({ state: element.state.toLowerCase(), count: 1, porcent: 0});
+        }
+
     });
-    //quitamos duplicados
-    const lista2 = lista.filter((item,index)=>{
-        return lista.indexOf(item) == index;
-      })
-    //sacamos el porcentaje
-    lista2.forEach(data => {
-        contador =0;
-        visitados.forEach(data2 => {
-            if(data==data2.state.toLowerCase()){
-                contador+=1
-            }
-        });
-        var porcentaje = ((contador*100)/lista.length);
-        filtro.push({
-            state: data,
-            porcent: porcentaje
-        })
-    }); 
-    return filtro;
+
+    lista.forEach(element=>
+    {
+        cantidad += element.count;
+    });
+
+    lista.forEach(element1=>
+    {
+        element1.porcent = (element1.count/cantidad)*100;
+    })
+    return lista;
 }
 //Tipo infectado 
 function type_(visitados){
     const lista = []
-    const filtro=[]
+    let cantidad = 0;
     //listamos solo datos que necesitamos
     visitados.forEach(element => {
-        lista.push(element.infectedtype.toLowerCase())
+        if(element.infectedtype != null)
+        {
+            var _k= false;
+            lista.forEach(element1=>
+            {
+                if(element1.infectedtype === element.infectedtype.toLowerCase())
+                {
+                    element1.count = element1.count + 1;
+                    _k = true;
+                }
+            })
+            if(!_k) lista.push({ infectedtype: element.infectedtype.toLowerCase(), count: 1, porcent: 0});
+        }
+
     });
     //quitamos duplicados
-    const lista2 = lista.filter((item,index)=>{
-        return lista.indexOf(item) == index;
-      })
-    //sacamos el porcentaje
-    lista2.forEach(data => {
-        contador =0;
-        visitados.forEach(data2 => {
-            if(data==data2.infectedtype.toLowerCase()){
-                contador+=1
-            }
-        });
-        var porcentaje = ((contador*100)/lista.length);
-        filtro.push({
-            infectedtype: data,
-            porcent: porcentaje
-        })
-    }); 
-    return filtro;
-}
+    lista.forEach(element=>
+    {
+        cantidad += element.count;
+    })
 
+    lista.forEach(element=>
+    {
+        element.porcent = (element.count/cantidad)*100;
+    })
+
+    return lista;
+}
 //Region
 function regiM_(visitados,num){
     const lista = []
