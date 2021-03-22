@@ -76,10 +76,10 @@ func manejador(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("response Body:", string(body))
 
 	value := string(body)
-	mesage, _ := sjson.Set(value, "Server_1", "Modificacion")
+	mesage, _ := sjson.Set(value, "way", "Google_Publisher")
 
 	buf := new(bytes.Buffer)
-	var errorPublisher = publishThatScales(buf, "civic-polymer-305516", "proyect_topic", mesage)
+	var errorPublisher = publishThatScales(buf, "civic-polymer-305516", "topic", mesage)
 	fmt.Print(buf.String())
 	if err != nil {
 		fmt.Print(errorPublisher)
