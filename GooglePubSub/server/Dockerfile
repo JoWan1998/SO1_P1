@@ -9,6 +9,6 @@ RUN go get -u github.com/tidwall/sjson
 
 EXPOSE 8080
 
-RUN export GOOGLE_APPLICATION_CREDENTIALS='clave.json'
+ENV GOOGLE_APPLICATION_CREDENTIALS="clave.json"
 
 CMD [ "go", "run", "publish_scale.go"]
