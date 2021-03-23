@@ -69,12 +69,14 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/ram', (req, res) => {
         const html = fs.readFileSync('/elements/procs/ram-module','utf-8');
         let texto = html.toString();
+        console.log("Ram!")
         res.send(texto);
     });
 
     app.get('/procesos', (req, res) => {
         const html = fs.readFileSync('/elements/procs/procesos','utf-8');
         let texto = html.toString();
+        console.log("Procesos!")
         res.send(texto);
     });
 
@@ -99,7 +101,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 
 			coleccion.insertOne(user)
 			.then(result => {
-				//console.log(result);
+				console.log("Registro Insertado!");
 				res.send('Registro Insertado!');
 			})
 			.catch(error => console.error("Error al insertar un registro: ", error));
@@ -122,7 +124,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/obtenerUsuarios', async (req, res) => {
         coleccion.find().toArray()
         .then(results => {
-            //console.log(results);
+            console.log("Obtener Usuarios!");
             res.json(results)
         })
         .catch(error => console.error(error))
@@ -132,6 +134,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/region',async (req,res)=>{
         await coleccion.find().toArray()
         .then(result => {
+            console.log("Region!")
             res.json(regiM_(result,5))
         })
         .catch(err => console.error("Error en region: ", err))
@@ -141,7 +144,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/Top5', async (req, res) => {
         coleccion.find().toArray()
         .then(results => {
-            //console.log(results);
+            console.log("Top 5!");
             res.json(top_(results,5))
         })
         .catch(error => console.error(error))
@@ -151,7 +154,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/state', async (req, res) => {
         coleccion.find().toArray()
         .then(results => {
-            //console.log(results);
+            console.log("State!");
             res.json(infect_(results))
         })
         .catch(error => console.error(error))
@@ -161,7 +164,7 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/type', async (req, res) => {
         coleccion.find().toArray()
         .then(results => {
-            //console.log(results);
+            console.log("Type!");
             res.json(type_(results))
         })
         .catch(error => console.error(error))
@@ -171,18 +174,20 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     app.get('/top5/pacientes', async (req,res)=> {
         await coleccion.find( { name: { $ne: null } }).sort({$natural:-1}).limit(5).toArray()
         .then(result => {
-            //console.log(result.length);
+            console.log("Top5/Pacientes!");
             res.json(result);
         })
         .catch(err => console.error("Error Top5 / pacientes:\n", err))
     });
 	
 	app.get('/Ages',async (req,res)=>{
-    await db.collection("Users").find({}).toArray(function(err,result){
-        if(err) throw err;
-        res.json(age_(result))
+        await coleccion.find().toArray()
+        .then(result => {
+            console.log("Age!")
+            res.json(age_(result))
+        })
+        .catch(err => console.error("Error /Age :\n", err))
     })
-})
 
     app.listen(port, () => {console.log(`Server corriendo en puerto ${port}!`) });
     
@@ -190,7 +195,6 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 .catch(console.error)
 
 //---------------------- METODOS
-
 function age_(pacientes)
 {
     const lista = []
@@ -217,6 +221,7 @@ function age_(pacientes)
 
     return lista;
 }
+
 //Top n departamentos infectados. (Gráfica de Funnel)
 function top_(visitados,num){
     const lista = []
