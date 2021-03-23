@@ -2,6 +2,7 @@ package main
 
 // [START pubsub_subscriber_async_pull]
 // [START pubsub_quickstart_subscriber]
+
 import (
 	"bytes"
 	"context"
@@ -13,6 +14,33 @@ import (
 	"cloud.google.com/go/pubsub"
 	"github.com/tidwall/sjson"
 )
+
+type Block struct {
+    Try     func()
+    Catch   func(Exception)
+    Finally func()
+}
+ 
+type Exception interface{}
+ 
+func Throw(up Exception) {
+    panic(up)
+}
+ 
+func (tcf Block) Do() {
+    if tcf.Finally != nil {
+ 
+        defer tcf.Finally()
+    }
+    if tcf.Catch != nil {
+        defer func() {
+            if r := recover(); r != nil {
+                tcf.Catch(r)
+            }
+        }()
+    }
+    tcf.Try()
+}
 
 func pullMsgs(projectID, subID string) error {
 	// projectID := "my-project-id"
@@ -29,19 +57,13 @@ func pullMsgs(projectID, subID string) error {
 	sub := client.Subscription(subID)
 	//cctx, cancel := context.WithCancel(ctx) //Se usaria en el caso que queramos cerrar el canal
 	err = sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
-
 		mu.Lock()
 		defer mu.Unlock()
 		fmt.Println("Got message: " + string(msg.Data))
 		msg.Ack()
-		//received++
-		/*if received == 10 { // Se indicaria el numero de mensajes que queremos obtener de forma asincrona y luego cerrar el canal
-			cancel()
-		}*/
 
-		//Codigo para Hacer la peticion Post fuera del container
 		value := string(msg.Data)
-		mesage, _ := sjson.Set(value, "way", "Google_Subscriber")
+		mesage, _ := sjson.Set(value, "way", "Google")
 		b := []byte(mesage)
 		resp, err := http.Post("http://35.222.55.115:8080/nuevoRegistro", "application/json",
 			bytes.NewBuffer(b))
@@ -63,5 +85,15 @@ func pullMsgs(projectID, subID string) error {
 }
 
 func main() {
-	pullMsgs("civic-polymer-305516", "my-sub")
+
+	for true {
+		Block{
+			Try: func() {
+				pullMsgs("mensajeria-308315", "tema_proyecto-sub")
+			},
+			Catch: func(e Exception) {
+				fmt.Printf("Caught %v\n", e)
+			},
+		}.Do()
+    }
 }
