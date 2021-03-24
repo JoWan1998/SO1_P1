@@ -87,10 +87,14 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
     */
     app.post('/nuevoRegistro', (req, res) => {
         const data = req.body;
-		if(data.name != null && data.location != null && data.age != null && data.infectedtype != null && data.state != null)
+        
+		if(data.name == null || data.location == null || data.age == null || data.infectedtype == null || data.state == null ||
+            data.name == "" || data.location == "" || data.age == 0 || data.infectedtype == "" || data.state == "")
 		{
-			
-			const user = {
+			res.send('Nulls encontrados');
+		}
+		else{
+            const user = {
 				"name": data.name,
 				"location": data.location,
 				"age": data.age,
@@ -105,9 +109,6 @@ mongoClient.connect(urlMongo, { useUnifiedTopology: true })
 				res.send('Registro Insertado!');
 			})
 			.catch(error => console.error("Error al insertar un registro: ", error));
-		}
-		else{
-			res.send('Nulls encontrados');
 		}
     });
 
