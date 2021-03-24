@@ -40,5 +40,5 @@ PROYECTO 1
 
 * Otros Servicios
     * [API con NodeJs](https://github.com/JoWan1998/SO1_P1/blob/main/NodeJs/MANUAL.md)
-    * [Balanceador de Carga]()
-    * [Configuración de Locust]()
+    * [Balanceador de Carga](https://github.com/JoWan1998/SO1_P1/blob/main/Locust/ManualLocust.md)
+    * [Configuración de Locust](https://github.com/JoWan1998/SO1_P1/blob/main/Locust/ManualLocust.md)
