@@ -35,8 +35,8 @@ PROYECTO 1
 
 * Página Web
     * [App Web con React](https://github.com/JoWan1998/SO1_P1/blob/main/Rabbitmq/Manuales/AppWeb%20React.md)
-    * [Manual Técnico]()
-    * [Manual de Usuario]()
+    * [Manual Técnico](https://github.com/JoWan1998/SO1_P1/blob/main/FrontEnd/Manual%20FrontEnd.md)
+    * [Manual de Usuario](https://github.com/JoWan1998/SO1_P1/blob/main/FrontEnd/Manual%20Usuario.md)
 
 * Otros Servicios
     * [API con NodeJs](https://github.com/JoWan1998/SO1_P1/blob/main/NodeJs/MANUAL.md)
