@@ -44,7 +44,7 @@ Creación de post, en este metodo se envian los valores al balanceador de carga.
 ```
 
 
-![Imagen Locust](/Locust/Imagenes/u1.png "This is a sample image.")
+![Imagen Locust](/Locust/imagenes/u1.png "This is a sample image.")
 
 
 
@@ -57,4 +57,4 @@ escoge un balanceador de carga over https, crea un servicio de backend ingresand
 
 Luego de configurar nuestro balanceador de carga observaremos un comportamiento identico al siguiente:
 
-![Imagen Locust](/Locust/Imagenes/u2.png "This is a sample image.")
+![Imagen Locust](/Locust/imagenes/u2.png "This is a sample image.")
